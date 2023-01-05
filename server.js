@@ -137,7 +137,6 @@ io.on('connection', function(socket){
 	socket.on('MOVE_AND_ROTATE', function (_data)
 	{
 	  var data = JSON.parse(_data);
-		console.log(data.posX);
 
 	  if(currentUser)
 	  {
