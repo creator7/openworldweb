@@ -7,10 +7,10 @@ var app      = express();// create an object of the express module
 var http     = require('http').Server(app);// create a http web server using the http library
 var io       = require('socket.io')(http);// import socketio communication module
 
-
 app.use("/public/TemplateData",express.static(__dirname + "/public/TemplateData"));
 app.use("/public/Build",express.static(__dirname + "/public/Build"));
 app.use(express.static(__dirname+'/public'));
+
 
 var clients			= [];// to storage clients
 var clientLookup = {};// clients search engine
@@ -65,12 +65,12 @@ io.on('connection', function(socket){
 		});
 	
 	//create a callback fuction to listening EmitJoin() method in NetworkMannager.cs unity script
-	socket.on('JOIN', function (data)
+	socket.on('JOIN', function (pack)
 	{
 	
 	    console.log('[INFO] JOIN received !!! ');
 
-		//var data = JSON.parse(pack);
+		var data = JSON.parse(pack);
 
          // fills out with the information emitted by the player in the unity
         currentUser = {
@@ -101,8 +101,7 @@ io.on('connection', function(socket){
 		 
 		 console.log('[INFO] Total players: ' + clients.length);
 		 
-		 var currentUserAtr = currentUser.id+','+currentUser.name+','+currentUser.posX+','+currentUser.posY+','+currentUser.posZ+','+currentUser.model;
-
+		var currentUserAtr = currentUser.id+','+currentUser.name+','+currentUser.posX+','+currentUser.posY+','+currentUser.posZ+','+currentUser.model;
 		 /*********************************************************************************************/		
 		
 
@@ -135,9 +134,11 @@ io.on('connection', function(socket){
 	
 		
 	//create a callback fuction to listening EmitMoveAndRotate() method in NetworkMannager.cs unity script
-	socket.on('MOVE_AND_ROTATE', function (data)
+	socket.on('MOVE_AND_ROTATE', function (_data)
 	{
-	  //var data = JSON.parse(_data);
+	  var data = JSON.parse(_data);
+		console.log(data.posX);
+
 	  if(currentUser)
 	  {
 
@@ -157,9 +158,9 @@ io.on('connection', function(socket){
 	});//END_SOCKET_ON
 	
 		//create a callback fuction to listening EmitAnimation() method in NetworkMannager.cs unity script
-	socket.on('ANIMATION', function (data)
+	socket.on('ANIMATION', function (_data)
 	{
-	  //var data = JSON.parse(_data);	
+	  var data = JSON.parse(_data);	
 	  
 	  if(currentUser)
 	  {
