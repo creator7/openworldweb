@@ -1,7 +1,4 @@
-/*
-*@autor: Rio 3D Studios
-*@description:  java script server that works as master server of the Basic Example of WebGL Multiplayer Kit
-*/
+
 var express  = require('express');//import express NodeJS framework module
 var app      = express();// create an object of the express module
 var http     = require('http').Server(app);// create a http web server using the http library
