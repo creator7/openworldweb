@@ -171,6 +171,34 @@ io.on('connection', function(socket){
       }//END_IF
 	  
 	});//END_SOCKET_ON
+
+	socket.on('INFO_CHANGED', function (_data)
+	{
+	  var data = JSON.parse(_data);	
+	  
+	  if(currentUser)
+	  {
+	   	var currentUserAttr = currentUser.id+','+data.model+','+data.name;
+
+		   for (var i = 0; i < clients.length; i++)
+		   {
+			  if (clients[i].name == currentUser.name && clients[i].id == currentUser.id) 
+			  {
+					clients[i].name = currentUser.name = data.name;
+					clients[i].model = currentUser.model = data.model;
+				  console.log("User "+clients[i].name+" info has changed");
+  
+			  };
+		  };
+
+	    //send to the client.js script
+	   //updates the animation of the player for the other game clients
+       	socket.broadcast.emit('UPDATE_PLAYER_INFO', currentUserAttr);
+	
+	   
+      }//END_IF
+	  
+	});//END_SOCKET_ON
 	
 
     // called when the user desconnect
