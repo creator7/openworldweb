@@ -1,13 +1,13 @@
-
 var express  = require('express');//import express NodeJS framework module
 var app      = express();// create an object of the express module
 var http     = require('http').Server(app);// create a http web server using the http library
 var io       = require('socket.io')(http);// import socketio communication module
+const url = require('url');
+const port = 3000;
 
 app.use("/public/TemplateData",express.static(__dirname + "/public/TemplateData"));
 app.use("/public/Build",express.static(__dirname + "/public/Build"));
 app.use(express.static(__dirname+'/public'));
-
 
 var clients			= [];// to storage clients
 var clientLookup = {};// clients search engine
@@ -19,6 +19,8 @@ function getDistance(x1, y1, x2, y2){
     
     return Math.sqrt(x * x + y * y);
 }
+
+
 
 //open a connection with the specific client
 io.on('connection', function(socket){
@@ -85,6 +87,9 @@ io.on('connection', function(socket){
 				   isMute:true
 				   };//new user  in clients list
 					
+				   console.log('PLOTX ' + data.plotX);
+				   console.log('PLOTY ' + data.plotY);
+
 		console.log('[INFO] player '+currentUser.name+': logged!');
 		console.log('[INFO] currentUser.position '+currentUser.position);	
 
@@ -236,4 +241,6 @@ io.on('connection', function(socket){
 http.listen(process.env.PORT ||3000, function(){
 	console.log('listening on *:3000');
 });
+
+
 console.log("------- server is running -------");
